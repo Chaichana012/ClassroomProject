@@ -1,4 +1,4 @@
-import 'package:classroomproject/homescreen.dart';
+import 'package:classroomproject/classscreen.dart';
 import 'package:flutter/material.dart';
 
 class createclass extends StatefulWidget {
@@ -63,7 +63,7 @@ class _createclassState extends State<createclass> {
         ),
         onPressed: () {
           Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const homepage()),
+            context, MaterialPageRoute(builder: (context) => const classpage()),
           );
         },
       ),
