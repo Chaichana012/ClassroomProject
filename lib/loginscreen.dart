@@ -1,5 +1,6 @@
 import 'package:classroomproject/homescreen.dart';
 import 'package:classroomproject/registerscreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class login extends StatefulWidget {
@@ -10,6 +11,19 @@ class login extends StatefulWidget {
 }
 
 class _loginState extends State<login> {
+  //final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  /*signIn(){
+    _auth.signInWithEmailAndPassword(
+        email: "chaichana@gmail.com",
+        password: "asdasd123"
+    ).then((user) {
+      print("signed in ${user.user?.email}");
+    }).catchError((error) {
+      print(error);
+    });
+  }*/
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,24 +119,24 @@ class _loginState extends State<login> {
   Container buildLogin() {
     return Container(
       margin: EdgeInsets.only(top: 12),
-    child: ElevatedButton(
-      child: const Text('เข้าสู่ระบบ',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 18, color: Colors.black)
-
-      ),
-      style: ElevatedButton.styleFrom(
-        shape: StadiumBorder(),
-        padding: EdgeInsets.all(12),
-      ),
-      onPressed: () {
-        Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const homepage()),
-        );
-      },
+      child: ElevatedButton(
+        child: const Text('เข้าสู่ระบบ',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 18, color: Colors.black)
+        ),
+        style: ElevatedButton.styleFrom(
+          shape: StadiumBorder(),
+          padding: EdgeInsets.all(12),
+        ),
+        onPressed: () {
+          Navigator.push(
+            context, MaterialPageRoute(builder: (context) => const homepage()),
+          );
+        },
       ),
     );
   }
+
 
   Container buildRegister() {
     return Container(
@@ -144,4 +158,6 @@ class _loginState extends State<login> {
       ),
     );
   }
+
+
 }
