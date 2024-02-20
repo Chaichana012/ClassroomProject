@@ -1,22 +1,22 @@
-import 'package:classroomproject/classscreen.dart';
-import 'package:classroomproject/assignmentscreen.dart.';
 import 'package:classroomproject/memberinclassscreen.dart';
+import 'package:classroomproject/assignmentscreen_student.dart';
+import 'package:classroomproject/classscreen_student.dart';
 import 'package:flutter/material.dart';
+// หน้า Home ของนักศึกษา
 
-class homepage extends StatefulWidget {
-  const homepage({super.key});
+class home_studentpage extends StatefulWidget {
+  const home_studentpage({super.key});
 
   @override
-  State<homepage> createState() => _homepageState();
+  State<home_studentpage> createState() => _home_studentpageState();
 }
 
-class _homepageState extends State<homepage> {
+class _home_studentpageState extends State<home_studentpage> {
 
   int MyCurrentIndex = 0; // หน้าเริ่มต้น
-  List pages = [classpage(),assignmentpage(),memberinclasspage()];
+  List pages = [class_studentpage(),assignment_studentpage(),memberinclasspage()];
   @override
   Widget build(BuildContext context) {
-
     Widget MyNavBar = BottomNavigationBar(
         currentIndex: MyCurrentIndex,
         onTap: (int index){
@@ -30,8 +30,7 @@ class _homepageState extends State<homepage> {
           BottomNavigationBarItem(icon: Icon(Icons.people),label: 'สมาชิก'),
         ]);
 
-    return  Scaffold(
-      appBar: AppBar(
+    return Scaffold(appBar: AppBar(
       backgroundColor: Colors.blueAccent,
       title: Text("Classroom"),
     ),
