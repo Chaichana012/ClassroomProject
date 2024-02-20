@@ -29,7 +29,6 @@ class _home_studentpageState extends State<home_studentpage> {
           BottomNavigationBarItem(icon: Icon(Icons.assignment),label: 'งาน',),
           BottomNavigationBarItem(icon: Icon(Icons.people),label: 'สมาชิก'),
         ]);
-
     return Scaffold(appBar: AppBar(
       backgroundColor: Colors.blueAccent,
       title: Text("Classroom"),

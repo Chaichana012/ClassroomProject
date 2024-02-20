@@ -106,17 +106,6 @@ class _loginState extends State<login> {
           Expanded(child: Divider(color: Colors.green[800])),
         ]));
   }
-  Container buildButtonRegister() {
-    return Container(
-        constraints: BoxConstraints.expand(height: 50),
-        child: Text("สมัครสมาชิก",
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 18, color: Colors.black)),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16), color: Color(0xFFF5F7FA)),
-        margin: EdgeInsets.only(top: 12),
-        padding: EdgeInsets.all(12));
-  }
   Container buildLogin() {
     return Container(
       margin: EdgeInsets.only(top: 12),
@@ -157,6 +146,29 @@ class _loginState extends State<login> {
               context, MaterialPageRoute(builder: (context) => const registerscreen()),
           );
         },
+      ),
+    );
+  }
+  Container buildLoginstd() {
+    return Container(
+      margin: EdgeInsets.only(top: 12),
+      child: InkWell(
+        onTap: () {
+
+        },
+        child: ElevatedButton(
+          child: const Text(
+            'เข้าสู่ระบบ',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 18, color: Colors.black),
+          ),
+          style: ElevatedButton.styleFrom(
+            shape: StadiumBorder(),
+            padding: EdgeInsets.all(12),
+          ), onPressed: () {
+          signIn();
+        },
+        ),
       ),
     );
   }

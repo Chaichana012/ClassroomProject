@@ -16,6 +16,7 @@ class _registerscreenState extends State<registerscreen> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
+
   int MyCurrentIndex = 0; // หน้าเริ่มต้น
   //List pages = [PageHome(),PageAccount(),PageSetting()];
 
@@ -109,7 +110,6 @@ class _registerscreenState extends State<registerscreen> {
           }
           final String email = emailController.text.trim();
           final String password = passwordController.text.trim();
-
           try {
             final UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
               email: email,
@@ -125,7 +125,6 @@ class _registerscreenState extends State<registerscreen> {
               context,
               MaterialPageRoute(builder: (context) => const login()),
             );
-
           }on FirebaseAuthException catch (error) {
             print(error);
             // แสดงข้อความแจ้งเตือน when error occurs
