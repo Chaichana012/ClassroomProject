@@ -14,32 +14,32 @@ class _loginState extends State<login> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("ClassRoomApp", style: TextStyle(color: Colors.black)),
-      ),
+      title: Text("ClassRoomApp", style: TextStyle(color: Colors.black)),
+    ),
       body: Container(
         color: Colors.blueGrey[50],
         child: Center(
-          child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                gradient: LinearGradient(
-                    colors: [Colors.blue, Colors.blue])),
-            margin: EdgeInsets.all(32),
-            padding: EdgeInsets.all(24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                buildTextFieldEmail(),
-                buildTextFieldPassword(),
-                buildLogin(),
-                //buildButtonSignIn(),
-                buildOtherLine(),
-                buildRegister(),
-                //buildButtonRegister()
-              ],
-            ),
-         )
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  gradient: LinearGradient(
+                      colors: [Colors.blue, Colors.blue])),
+              margin: EdgeInsets.all(32),
+              padding: EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  buildTextFieldEmail(),
+                  buildTextFieldPassword(),
+                  buildLogin(),
+                  //buildButtonSignIn(),
+                  buildOtherLine(),
+                  buildRegister(),
+                  //buildButtonRegister()
+                ],
+              ),
+            )
         ),
       ),
     );
