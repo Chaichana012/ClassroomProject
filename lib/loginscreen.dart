@@ -1,5 +1,6 @@
 import 'package:classroomproject/homescreen.dart';
 import 'package:classroomproject/registerscreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class login extends StatefulWidget {
@@ -8,62 +9,77 @@ class login extends StatefulWidget {
   @override
   State<login> createState() => _loginState();
 }
-
 class _loginState extends State<login> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  signIn() async{
+    final String email = emailController.text;
+    final String password = passwordController.text;
+
+    try {
+      final UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: email.trim(),
+        password: password.trim(),
+      );
+      print("signed in ${userCredential.user?.email}");
+
+      // นำทางไปยังหน้าต่อไปเมื่อเข้าสู่ระบบสำเร็จ
+      Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => const homepage()),
+      );
+    } on FirebaseAuthException catch (error) {
+      print(error);
+      // แสดงข้อความแจ้งเตือนเมื่อเข้าสู่ระบบไม่สำเร็จ
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("อีเมล์หรือรหัสผ่านไม่ถูกต้อง"),
+        ),
+      );
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-      title: Text("ClassRoomApp", style: TextStyle(color: Colors.black)),
-    ),
+        title: Text("ClassRoomApp", style: TextStyle(color: Colors.black)),
+        automaticallyImplyLeading: false,
+      ),
       body: Container(
         color: Colors.blueGrey[50],
         child: Center(
-            child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  gradient: LinearGradient(
-                      colors: [Colors.blue, Colors.blue])),
-              margin: EdgeInsets.all(32),
-              padding: EdgeInsets.all(24),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  buildTextFieldEmail(),
-                  buildTextFieldPassword(),
-                  buildLogin(),
-                  //buildButtonSignIn(),
-                  buildOtherLine(),
-                  buildRegister(),
-                  //buildButtonRegister()
-                ],
-              ),
-            )
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                gradient: LinearGradient(
+                    colors: [Colors.blue, Colors.blue])),
+            margin: EdgeInsets.all(32),
+            padding: EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                buildTextFieldEmail(),
+                buildTextFieldPassword(),
+                buildLogin(),
+                buildOtherLine(),
+                buildRegister(),
+              ],
+            ),
+         )
         ),
       ),
     );
   }
-
-
-  /*Container buildButtonSignIn() {
-    return Container(
-        constraints: BoxConstraints.expand(height: 50),
-        child: Text("เข้าสู่ระบบ",
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 18, color: Colors.black)),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16), color: Color(0xFFF5F7FA)),
-        margin: EdgeInsets.only(top: 16),
-        padding: EdgeInsets.all(12),
-    );
-  }*/
   Container buildTextFieldEmail() {
     return Container(
         padding: EdgeInsets.all(12),
         decoration: BoxDecoration(
             color: Colors.blue[50], borderRadius: BorderRadius.circular(16)),
         child: TextField(
+            keyboardType: TextInputType.emailAddress,
+            controller: emailController,
             decoration: InputDecoration.collapsed(hintText: "ชื่อผู้ใช้งาน"),
             style: TextStyle(fontSize: 18)));
   }
@@ -74,6 +90,7 @@ class _loginState extends State<login> {
         decoration: BoxDecoration(
             color: Colors.blue[50], borderRadius: BorderRadius.circular(16)),
         child: TextField(
+            controller: passwordController,
             obscureText: true,
             decoration: InputDecoration.collapsed(hintText: "รหัสผ่าน"),
             style: TextStyle(fontSize: 18)));
@@ -90,40 +107,29 @@ class _loginState extends State<login> {
           Expanded(child: Divider(color: Colors.green[800])),
         ]));
   }
-  Container buildButtonRegister() {
-    return Container(
-        constraints: BoxConstraints.expand(height: 50),
-        child: Text("สมัครสมาชิก",
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 18, color: Colors.black)),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16), color: Color(0xFFF5F7FA)),
-        margin: EdgeInsets.only(top: 12),
-        padding: EdgeInsets.all(12));
-  }
-
   Container buildLogin() {
     return Container(
       margin: EdgeInsets.only(top: 12),
-    child: ElevatedButton(
-      child: const Text('เข้าสู่ระบบ',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 18, color: Colors.black)
-
-      ),
-      style: ElevatedButton.styleFrom(
-        shape: StadiumBorder(),
-        padding: EdgeInsets.all(12),
-      ),
-      onPressed: () {
-        Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const homepage()),
-        );
-      },
+      child: InkWell(
+        onTap: () {
+          signIn();
+        },
+        child: ElevatedButton(
+          child: const Text(
+            'เข้าสู่ระบบ',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 18, color: Colors.black),
+          ),
+          style: ElevatedButton.styleFrom(
+            shape: StadiumBorder(),
+            padding: EdgeInsets.all(12),
+          ), onPressed: () {
+            signIn();
+            },
+        ),
       ),
     );
   }
-
   Container buildRegister() {
     return Container(
       margin: EdgeInsets.only(top: 12),
@@ -141,6 +147,29 @@ class _loginState extends State<login> {
               context, MaterialPageRoute(builder: (context) => const registerscreen()),
           );
         },
+      ),
+    );
+  }
+  Container buildLoginstd() {
+    return Container(
+      margin: EdgeInsets.only(top: 12),
+      child: InkWell(
+        onTap: () {
+
+        },
+        child: ElevatedButton(
+          child: const Text(
+            'เข้าสู่ระบบ',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 18, color: Colors.black),
+          ),
+          style: ElevatedButton.styleFrom(
+            shape: StadiumBorder(),
+            padding: EdgeInsets.all(12),
+          ), onPressed: () {
+          signIn();
+        },
+        ),
       ),
     );
   }
