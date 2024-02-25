@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "883900645910",
+    "project_id": "classroomproject-cdbd0",
+    "storage_bucket": "classroomproject-cdbd0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:883900645910:android:c15f98e51d294fa6ac6b37",
+        "android_client_info": {
+          "package_name": "com.example.classroomproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdSPQRPRcaesTbwdlZwtyM9jFY_bBTlkc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
