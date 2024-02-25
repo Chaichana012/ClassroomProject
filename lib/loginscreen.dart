@@ -78,6 +78,7 @@ class _loginState extends State<login> {
         decoration: BoxDecoration(
             color: Colors.blue[50], borderRadius: BorderRadius.circular(16)),
         child: TextField(
+            keyboardType: TextInputType.emailAddress,
             controller: emailController,
             decoration: InputDecoration.collapsed(hintText: "ชื่อผู้ใช้งาน"),
             style: TextStyle(fontSize: 18)));
