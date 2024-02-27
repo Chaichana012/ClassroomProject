@@ -43,7 +43,7 @@ class _classpageState extends State<classpage> {
             return const Text('Something went wrong');
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Text("Loading");
+            return const Text("Loading!");
           }
           // กรองข้อมูลเฉพาะที่ teacher เป็น CurrentUser
           var filteredDocs = snapshot.data!.docs.where((doc) =>
