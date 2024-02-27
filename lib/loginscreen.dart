@@ -37,7 +37,7 @@ class _loginState extends State<login> {
                 context, MaterialPageRoute(builder: (context) => classpage(currentUser: currentUser)));
           } else if (doc['role'] == 'นักเรียน') {
             Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => home_studentpage()));
+                context, MaterialPageRoute(builder: (context) => home_studentpage(currentUser: currentUser)));
           } else {
             // แสดงข้อความแจ้งเตือน
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -76,6 +76,7 @@ class _loginState extends State<login> {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  buildLogo(),
                   buildTextFieldEmail(),
                   buildTextFieldPassword(),
                   buildLogin(),
@@ -86,6 +87,13 @@ class _loginState extends State<login> {
             )
         ),
       ),
+    );
+  }
+  Widget buildLogo() {
+    return Image.asset(
+      'asset/EDUCATION_2.png',
+      width: 270,
+      height: 270,
     );
   }
   Container buildTextFieldEmail() {
@@ -166,27 +174,5 @@ class _loginState extends State<login> {
       ),
     );
   }
-  Container buildLoginstd() {
-    return Container(
-      margin: EdgeInsets.only(top: 12),
-      child: InkWell(
-        onTap: () {
 
-        },
-        child: ElevatedButton(
-          child: const Text(
-            'เข้าสู่ระบบ',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 18, color: Colors.black),
-          ),
-          style: ElevatedButton.styleFrom(
-            shape: StadiumBorder(),
-            padding: EdgeInsets.all(12),
-          ), onPressed: () {
-
-        },
-        ),
-      ),
-    );
-  }
 }

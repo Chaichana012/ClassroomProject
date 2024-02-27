@@ -15,7 +15,6 @@ class homepage extends StatefulWidget {
 
 class _homepageState extends State<homepage> {
 
-
   @override
 
   @override
@@ -26,7 +25,6 @@ class _homepageState extends State<homepage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
       ),
-
     );
   }
 }

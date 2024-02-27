@@ -11,6 +11,7 @@ class joinclassroom extends StatefulWidget {
 }
 
 class _createclassState extends State<joinclassroom> {
+  String currentUser = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,7 +66,7 @@ class _createclassState extends State<joinclassroom> {
         ),
         onPressed: () {
           Navigator.push(
-            context, MaterialPageRoute(builder: (context) => home_studentpage()),
+            context, MaterialPageRoute(builder: (context) => home_studentpage(currentUser: currentUser)),
           );
         },
       ),
