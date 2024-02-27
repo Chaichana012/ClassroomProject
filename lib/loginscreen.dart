@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:classroomproject/Teacher/classscreen.dart';
 import 'package:classroomproject/Teacher/homescreen.dart';
 import 'package:classroomproject/Student/homescreen_student.dart';
 import 'package:classroomproject/registerscreen.dart';
@@ -33,7 +34,7 @@ class _loginState extends State<login> {
           currentUser = doc['firstname'].toString();
           if (doc['role'] == 'ครู') {
             Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => homepage(currentUser: currentUser)));
+                context, MaterialPageRoute(builder: (context) => classpage(currentUser: currentUser)));
           } else if (doc['role'] == 'นักเรียน') {
             Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => home_studentpage()));

@@ -6,8 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 class createclasspage extends StatefulWidget {
-  const createclasspage({super.key});
-
+  final String currentUser;
+  const createclasspage({Key? key, required this.currentUser}) : super(key: key);
 
   @override
   State<createclasspage> createState() => _addclasspageState();
@@ -16,7 +16,7 @@ class createclasspage extends StatefulWidget {
 class _addclasspageState extends State<createclasspage> {
 
   final TextEditingController SubjectController = TextEditingController();
-  final TextEditingController TeacherController = TextEditingController();
+  late TextEditingController TeacherController = TextEditingController();
   final CollectionReference users = FirebaseFirestore.instance.collection('classrooms');
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
 
@@ -30,7 +30,6 @@ class _addclasspageState extends State<createclasspage> {
       // ล้างข้อมูลในฟอร์ม
       SubjectController.clear();
       TeacherController.clear();
-
       // แสดงข้อความว่า "บันทึกข้อมูลเรียบร้อยแล้ว"
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('สร้างชั้นเรียนเรียบร้อย')),
@@ -39,8 +38,11 @@ class _addclasspageState extends State<createclasspage> {
       print('เกิดข้อผิดพลาดในการสร้าง: $e');
     }
   }
-
   @override
+  void initState() {
+    super.initState();
+    TeacherController = TextEditingController(text: widget.currentUser); // กำหนดค่าเริ่มต้นให้กับ teacherController
+  }
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text("Create Classroom", style: TextStyle(color: Colors.black))
