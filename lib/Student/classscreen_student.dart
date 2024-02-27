@@ -1,4 +1,4 @@
-import 'package:classroomproject/createclassscreen.dart';
+import 'package:classroomproject/Student/joinclassroom.dart';
 import 'package:flutter/material.dart';
 
 class class_studentpage extends StatefulWidget {
@@ -14,7 +14,7 @@ class _classscreen_studentState extends State<class_studentpage> {
     Widget MyFloating_createclass = FloatingActionButton(
       onPressed: () async{
         var MyRespone = await
-        Navigator.push(context,MaterialPageRoute(builder: (context)=>createclass()));
+        Navigator.push(context,MaterialPageRoute(builder: (context)=> joinclassroom()));
       },
       child: Icon(Icons.add),
     );

@@ -1,4 +1,5 @@
-import 'package:classroomproject/createassignmentscreen.dart';
+import 'package:classroomproject/Teacher/assignmentscreen.dart';
+import 'package:classroomproject/Teacher/createassignmentscreen.dart';
 import 'package:flutter/material.dart';
 
 class assignmentpage extends StatefulWidget {

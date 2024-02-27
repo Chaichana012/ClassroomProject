@@ -1,6 +1,5 @@
 import 'package:classroomproject/loginscreen.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -16,7 +15,6 @@ class _registerscreenState extends State<registerscreen> {
   final _formKey = GlobalKey<FormState>();
   List<String> list = <String>['กรุณาเลือก','นักเรียน', 'ครู'];
   String role= 'กรุณาเลือก';
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -81,6 +79,7 @@ class _registerscreenState extends State<registerscreen> {
                   buildTextFieldfirstname(),
                   buildTextFieldlastname(),
                   buildTextFieldEmail(),
+                  buildTextFieldUsername(),
                   buildTextFieldPassword(),
                   buildTextFieldPassword2(),
                   buildDropdownRole(),
@@ -93,7 +92,6 @@ class _registerscreenState extends State<registerscreen> {
       ),
     );
   }
-
   Container buildTextFieldEmail() {
     return Container(
         padding: EdgeInsets.all(12),
@@ -102,9 +100,21 @@ class _registerscreenState extends State<registerscreen> {
             color: Colors.blue[50], borderRadius: BorderRadius.circular(16)),
         child: TextField(
             controller: emailController,
-            decoration: InputDecoration.collapsed(hintText: "ชื่อผู้ใช้งาน"),
+            decoration: InputDecoration.collapsed(hintText: "อีเมล"),
             style: TextStyle(fontSize: 18)));
   }
+
+  Container buildTextFieldUsername() {
+    return Container(
+        padding: EdgeInsets.all(12),
+        margin: EdgeInsets.only(top: 12),
+        decoration: BoxDecoration(
+            color: Colors.blue[50], borderRadius: BorderRadius.circular(16)),
+        child: TextField(
+            controller: usernameController,
+            decoration: InputDecoration.collapsed(hintText: "ชื่อผู้ใช้งาน"),
+            style: TextStyle(fontSize: 18)));
+    }
   Container buildTextFieldPassword() {
     return Container(
         padding: EdgeInsets.all(12),
@@ -177,7 +187,6 @@ class _registerscreenState extends State<registerscreen> {
             );
             return;
           }
-
           if (emailController.text.isEmpty) {
             // แสดงข้อความแจ้งเตือน
             ScaffoldMessenger.of(context).showSnackBar(
@@ -187,9 +196,8 @@ class _registerscreenState extends State<registerscreen> {
             );
             return;
           }
-
           _save();
-          Navigator.push(context,MaterialPageRoute(
+          Navigator.pushReplacement(context,MaterialPageRoute(
               builder: (context){
                 return login();
               })

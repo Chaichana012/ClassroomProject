@@ -1,4 +1,4 @@
-import 'package:classroomproject/homescreen.dart';
+import 'package:classroomproject/Teacher/homescreen.dart';
 import 'package:classroomproject/loginscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
