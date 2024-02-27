@@ -1,7 +1,11 @@
-import 'package:classroomproject/homescreen.dart';
+import 'dart:async';
+import 'package:classroomproject/Teacher/homescreen.dart';
+import 'package:classroomproject/Student/homescreen_student.dart';
 import 'package:classroomproject/registerscreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class login extends StatefulWidget {
   const login({super.key});
@@ -9,36 +13,47 @@ class login extends StatefulWidget {
   @override
   State<login> createState() => _loginState();
 }
+
 class _loginState extends State<login> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final TextEditingController emailController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  String currentUser = '';
 
-  signIn() async{
-    final String email = emailController.text;
-    final String password = passwordController.text;
+  void checkUsernameAndPassword() async {
+    await Firebase.initializeApp();
+    final firestore = FirebaseFirestore.instance;
+    final Users = usernameController.text;
+    final Pass = passwordController.text;
 
-    try {
-      final UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: email.trim(),
-        password: password.trim(),
-      );
-      print("signed in ${userCredential.user?.email}");
-
-      // นำทางไปยังหน้าต่อไปเมื่อเข้าสู่ระบบสำเร็จ
-      Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const homepage()),
-      );
-    } on FirebaseAuthException catch (error) {
-      print(error);
-      // แสดงข้อความแจ้งเตือนเมื่อเข้าสู่ระบบไม่สำเร็จ
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("อีเมล์หรือรหัสผ่านไม่ถูกต้อง"),
-        ),
-      );
-    }
+    Stream<QuerySnapshot> snapshots = firestore.collection('users').where('username', isEqualTo: Users).snapshots();
+    snapshots.listen((snapshot) {
+      for (var doc in snapshot.docs) {
+        if (doc['username'.toString()] == Users && doc['password'].toString() == Pass) {
+          currentUser = doc['firstname'].toString();
+          if (doc['role'] == 'ครู') {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => homepage(currentUser: currentUser)));
+          } else if (doc['role'] == 'นักเรียน') {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => home_studentpage()));
+          } else {
+            // แสดงข้อความแจ้งเตือน
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('สิทธิ์การเข้าใช้งานไม่ถูกต้อง'),
+            ));
+          }
+        } else {
+          // รหัสและชื่อผู้ใช้งานไม่ถูกต้อง
+          // แสดงข้อความแจ้งเตือน
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง'),
+          ));
+        }
+      }
+    });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,25 +64,25 @@ class _loginState extends State<login> {
       body: Container(
         color: Colors.blueGrey[50],
         child: Center(
-          child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                gradient: LinearGradient(
-                    colors: [Colors.blue, Colors.blue])),
-            margin: EdgeInsets.all(32),
-            padding: EdgeInsets.all(24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                buildTextFieldEmail(),
-                buildTextFieldPassword(),
-                buildLogin(),
-                buildOtherLine(),
-                buildRegister(),
-              ],
-            ),
-         )
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  gradient: LinearGradient(
+                      colors: [Colors.blue, Colors.blue])),
+              margin: EdgeInsets.all(32),
+              padding: EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  buildTextFieldEmail(),
+                  buildTextFieldPassword(),
+                  buildLogin(),
+                  buildOtherLine(),
+                  buildRegister(),
+                ],
+              ),
+            )
         ),
       ),
     );
@@ -79,7 +94,7 @@ class _loginState extends State<login> {
             color: Colors.blue[50], borderRadius: BorderRadius.circular(16)),
         child: TextField(
             keyboardType: TextInputType.emailAddress,
-            controller: emailController,
+            controller: usernameController,
             decoration: InputDecoration.collapsed(hintText: "ชื่อผู้ใช้งาน"),
             style: TextStyle(fontSize: 18)));
   }
@@ -112,7 +127,7 @@ class _loginState extends State<login> {
       margin: EdgeInsets.only(top: 12),
       child: InkWell(
         onTap: () {
-          signIn();
+          checkUsernameAndPassword();
         },
         child: ElevatedButton(
           child: const Text(
@@ -124,8 +139,8 @@ class _loginState extends State<login> {
             shape: StadiumBorder(),
             padding: EdgeInsets.all(12),
           ), onPressed: () {
-            signIn();
-            },
+          checkUsernameAndPassword();
+        },
         ),
       ),
     );
@@ -144,7 +159,7 @@ class _loginState extends State<login> {
         ),
         onPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => const registerscreen()),
+            context, MaterialPageRoute(builder: (context) => const registerscreen()),
           );
         },
       ),
@@ -167,7 +182,7 @@ class _loginState extends State<login> {
             shape: StadiumBorder(),
             padding: EdgeInsets.all(12),
           ), onPressed: () {
-          signIn();
+
         },
         ),
       ),

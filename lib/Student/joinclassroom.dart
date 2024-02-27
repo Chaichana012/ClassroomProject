@@ -1,14 +1,16 @@
-import 'package:classroomproject/classscreen.dart';
+import 'package:classroomproject/Student/classscreen_student.dart';
+import 'package:classroomproject/Student/homescreen_student.dart';
+import 'package:classroomproject/Teacher/classscreen.dart';
 import 'package:flutter/material.dart';
 
-class createclass extends StatefulWidget {
-  const createclass({super.key});
+class joinclassroom extends StatefulWidget {
+  const joinclassroom({super.key});
 
   @override
-  State<createclass> createState() => _createclassState();
+  State<joinclassroom> createState() => _createclassState();
 }
 
-class _createclassState extends State<createclass> {
+class _createclassState extends State<joinclassroom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,10 +65,11 @@ class _createclassState extends State<createclass> {
         ),
         onPressed: () {
           Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const classpage()),
+            context, MaterialPageRoute(builder: (context) => home_studentpage()),
           );
         },
       ),
     );
   }
 }
+

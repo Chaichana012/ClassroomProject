@@ -1,10 +1,11 @@
-import 'package:classroomproject/memberinclassscreen.dart';
-import 'package:classroomproject/assignmentscreen_student.dart';
-import 'package:classroomproject/classscreen_student.dart';
+import 'package:classroomproject/Teacher/memberinclassscreen.dart';
+import 'package:classroomproject/Student/assignmentscreen_student.dart';
+import 'package:classroomproject/Student/classscreen_student.dart';
 import 'package:flutter/material.dart';
 // หน้า Home ของนักศึกษา
 
 class home_studentpage extends StatefulWidget {
+
   const home_studentpage({super.key});
 
   @override
@@ -25,7 +26,7 @@ class _home_studentpageState extends State<home_studentpage> {
           });
         },
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.class_),label: 'ห้องเรียน',),
+          BottomNavigationBarItem(icon: Icon(Icons.class_),label: 'นักเรียน',),
           BottomNavigationBarItem(icon: Icon(Icons.assignment),label: 'งาน',),
           BottomNavigationBarItem(icon: Icon(Icons.people),label: 'สมาชิก'),
         ]);
