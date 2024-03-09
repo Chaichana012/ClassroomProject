@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import '../classuser.dart';
+
 class createclasspage extends StatefulWidget {
-  final String currentUser;
-  const createclasspage({Key? key, required this.currentUser}) : super(key: key);
+
+  const createclasspage({super.key});
 
   @override
   State<createclasspage> createState() => _addclasspageState();
@@ -41,11 +43,14 @@ class _addclasspageState extends State<createclasspage> {
   @override
   void initState() {
     super.initState();
-    TeacherController = TextEditingController(text: widget.currentUser); // กำหนดค่าเริ่มต้นให้กับ teacherController
+    TeacherController = TextEditingController(text: Profile.username); // กำหนดค่าเริ่มต้นให้กับ teacherController
   }
+
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("Create Classroom", style: TextStyle(color: Colors.black))
+        appBar: AppBar(
+            backgroundColor: Colors.blueAccent,
+            title: Text("Create Classroom", style: TextStyle(color: Colors.black))
     ),
         body: Container(
           child: Center(

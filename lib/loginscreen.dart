@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'classuser.dart';
+
 class login extends StatefulWidget {
   const login({super.key});
 
@@ -32,12 +34,13 @@ class _loginState extends State<login> {
       for (var doc in snapshot.docs) {
         if (doc['username'.toString()] == Users && doc['password'].toString() == Pass) {
           currentUser = doc['firstname'].toString();
+          Profile.setUsername(doc['firstname'].toString());
           if (doc['role'] == 'ครู') {
             Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => classpage(currentUser: currentUser)));
+                context, MaterialPageRoute(builder: (context) => classpage()));
           } else if (doc['role'] == 'นักเรียน') {
             Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => home_studentpage(currentUser: currentUser)));
+                context, MaterialPageRoute(builder: (context) => home_studentpage()));
           } else {
             // แสดงข้อความแจ้งเตือน
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(

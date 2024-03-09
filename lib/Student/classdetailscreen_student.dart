@@ -13,3 +13,4 @@ class _classdetail_studentpageState extends State<classdetail_studentpage> {
     return const Placeholder();
   }
 }
+

@@ -5,11 +5,13 @@ import 'package:classroomproject/Teacher/homescreen.dart';
 import 'package:classroomproject/Teacher/memberinclassscreen.dart';
 import 'package:flutter/material.dart';
 
+import '../classuser.dart';
+
 //หน้านี้เป็นที่ผู้กดคลิกเข้ามา Classroom อีกที
 class classdetailpage extends StatefulWidget {
-  final String subject;
 
-  const classdetailpage({required this.subject});
+
+  const classdetailpage({super.key});
 
   @override
   State<classdetailpage> createState() => _classdetailpageState();
@@ -31,6 +33,7 @@ class _classdetailpageState extends State<classdetailpage> {
   }
 
   Widget build(BuildContext context) {
+
     Widget MyNavBar = BottomNavigationBar(
         currentIndex: MyCurrentIndex,
         onTap: (int index){
@@ -44,21 +47,15 @@ class _classdetailpageState extends State<classdetailpage> {
           BottomNavigationBarItem(icon: Icon(Icons.people),label: 'สมาชิก'),
         ]);
 
-    Widget MyFloating_createannouncementpage = FloatingActionButton(
-      onPressed: () async{
-        var MyRespone = await
-        Navigator.push(context,MaterialPageRoute(builder: (context)=>createannouncementpage()));
-      },
-      child: Icon(Icons.add),
-    );
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
-        title: Text(widget.subject),
+        title: Text('ยินดีต้อนรับ ${Profile.subject}'),
       ),
       body: pages[MyCurrentIndex],
       bottomNavigationBar: MyNavBar,
-      //floatingActionButton: MyFloating_createannouncementpage,
     );
   }
+
 }

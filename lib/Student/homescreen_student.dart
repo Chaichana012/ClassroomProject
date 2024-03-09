@@ -3,12 +3,14 @@ import 'package:classroomproject/Student/assignmentscreen_student.dart';
 import 'package:classroomproject/Student/classscreen_student.dart';
 import 'package:classroomproject/loginscreen.dart';
 import 'package:flutter/material.dart';
+
+import '../classuser.dart';
 // หน้า Home ของนักศึกษา
 
 class home_studentpage extends StatefulWidget {
 
-  final String currentUser;
-  const home_studentpage({super.key,required this.currentUser,});
+
+  const home_studentpage({super.key});
 
   @override
   State<home_studentpage> createState() => _home_studentpageState();
@@ -36,7 +38,7 @@ class _home_studentpageState extends State<home_studentpage> {
         ]);
     return Scaffold(appBar: AppBar(
       backgroundColor: Colors.blueAccent,
-      title: Center(child: Text('ยินดีต้อนรับ ${widget.currentUser}')),
+      title: Center(child: Text('ยินดีต้อนรับ ${Profile.username}')),
       automaticallyImplyLeading: false,
       actions: [
         IconButton(
