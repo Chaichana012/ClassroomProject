@@ -33,8 +33,14 @@ class _loginState extends State<login> {
     snapshots.listen((snapshot) {
       for (var doc in snapshot.docs) {
         if (doc['username'.toString()] == Users && doc['password'].toString() == Pass) {
+
           currentUser = doc['firstname'].toString();
+
           Profile.setUsername(doc['firstname'].toString());
+          Profile.setfirstname(doc['firstname'].toString());
+          Profile.setlastname(doc['lastname'].toString());
+          Profile.setEmail(doc['email'].toString());
+
           if (doc['role'] == 'ครู') {
             Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => classpage()));

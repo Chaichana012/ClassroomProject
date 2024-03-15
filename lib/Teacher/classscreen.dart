@@ -6,8 +6,10 @@ import 'package:classroomproject/Teacher/memberinclassscreen.dart';
 import 'package:classroomproject/loginscreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:classroomproject/drawer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '../classuser.dart';
+import '../profile.dart';
 
 
 class classpage extends StatefulWidget {
@@ -24,6 +26,18 @@ class _classpageState extends State<classpage> {
   void logout() {
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => login()));
   }
+  void goToProfilePage() {
+    //pop menu drawer
+    Navigator.pop(context);
+
+    //go to profile page
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const ProfilePage(),
+      ),
+    );
+  }
   Widget build(BuildContext context) {
     Widget MyFloating_addclasspage = FloatingActionButton(
       onPressed: () async{
@@ -37,15 +51,13 @@ class _classpageState extends State<classpage> {
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
         title: Center(child: Text('ยินดีต้อนรับ ${Profile.username}')),
-        automaticallyImplyLeading: false,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: logout,
-          ),
-        ],
+        //automaticallyImplyLeading: false,
       ),
       floatingActionButton: MyFloating_addclasspage,
+      drawer: MyDrawer(
+        onProfileTap: goToProfilePage,
+        onSignOut: logout,
+      ),
       body:
       Container(
         child: StreamBuilder<QuerySnapshot>(

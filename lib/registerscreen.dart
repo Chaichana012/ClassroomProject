@@ -27,6 +27,8 @@ class _registerscreenState extends State<registerscreen> {
 
   Future<void> _save([DocumentSnapshot? documentSnapshot]) async {
     try {
+
+      // บันทึกข้อมูลเมื่อไม่พบข้อมูลซ้ำ
       final Map<String, dynamic> data = {
         "username": usernameController.text,
         "firstname": firstnameController.text,
@@ -36,6 +38,7 @@ class _registerscreenState extends State<registerscreen> {
         "role": role,
       };
       await users.add(data);
+
       // ล้างข้อมูลในฟอร์ม
       usernameController.clear();
       firstnameController.clear();
@@ -51,6 +54,8 @@ class _registerscreenState extends State<registerscreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('บันทึกข้อมูลเรียบร้อยแล้ว')),
       );
+
+      // นำผู้ใช้ไปยังหน้า Login
     } catch (e) {
       print('เกิดข้อผิดพลาดในการสร้างหรืออัปเดตเอกสาร: $e');
     }
@@ -114,7 +119,7 @@ class _registerscreenState extends State<registerscreen> {
             controller: usernameController,
             decoration: InputDecoration.collapsed(hintText: "ชื่อผู้ใช้งาน"),
             style: TextStyle(fontSize: 18)));
-    }
+  }
   Container buildTextFieldPassword() {
     return Container(
         padding: EdgeInsets.all(12),
@@ -178,11 +183,51 @@ class _registerscreenState extends State<registerscreen> {
           padding: EdgeInsets.all(12),
         ),
         onPressed: () async {
+          if (!emailController.text.contains('@gmail.com')) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("กรุณาใส่อีเมลที่มีรูปแบบ @gmail.com"),
+              ),
+            );
+            return;
+          }
           if (passwordController.text != confirmPasswordController.text) {
             // แสดงข้อความแจ้งเตือนรหัสผ่านไม่ตรงกัน
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text("รหัสผ่านไม่ตรงกัน กรุณาใส่ใหม่อีกครั้ง"),
+              ),
+            );
+            return;
+          }
+          if (confirmPasswordController.text.isEmpty){
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("กรุณากรอกยืนยันรหัสผ่าน"),
+              ),
+            );
+            return;
+          }
+          if (passwordController.text.isEmpty){
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("กรุณากรอกรหัสผ่าน"),
+              ),
+            );
+            return;
+          }
+          if (firstnameController.text.isEmpty){
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("กรุณากรอกชื่อ"),
+              ),
+            );
+            return;
+          }
+          if (lastnameController.text.isEmpty){
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("กรุณากรอกนามสกุล"),
               ),
             );
             return;
@@ -196,17 +241,80 @@ class _registerscreenState extends State<registerscreen> {
             );
             return;
           }
-          _save();
-          Navigator.pushReplacement(context,MaterialPageRoute(
-              builder: (context){
-                return login();
-              })
-          );
-          },
-          // final String email = emailController.text.trim();
-          // final String password = passwordController.text.trim();
+          if (usernameController.text.isEmpty){
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("กรุณากรอกชื่อผู้ใช้งาน"),
+              ),
+            );
+            return;
+          }
+          if (role == 'กรุณาเลือก') {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("กรุณาเลือกสถานะ"),
+              ),
+            );
+            return;
+          }
+          if (!validatePassword(passwordController.text)) {
+            // แสดงข้อความแจ้งเตือน
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("รหัสผ่านต้องมีตัวอักษรไม่ต่ำกว่า 8 ตัว และ ต้องมีตัวอักษรตัวใหญ่อยู่อย่างน้อย 1 ตัว"),
+              ),
+            );
+            return;
+          }
+          try {
+            final QuerySnapshot<Object?> existingUsers = await users
+                .where('username', isEqualTo: usernameController.text)
+                .limit(1)
+                .get();
+
+            if (existingUsers.docs.isNotEmpty) {
+              // แสดงข้อความแจ้งเตือนถ้า username มีการใช้งานแล้ว
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('ชื่อผู้ใช้งานนี้มีการใช้งานแล้ว กรุณาเลือกชื่อผู้ใช้งานอื่น'),
+                ),
+              );
+              return;
+            }
+
+            final QuerySnapshot<Object?> existingEmails = await users
+                .where('email', isEqualTo: emailController.text)
+                .limit(1)
+                .get();
+
+            if (existingEmails.docs.isNotEmpty) {
+              // แสดงข้อความแจ้งเตือนถ้าอีเมล์มีการใช้งานแล้ว
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('อีเมล์นี้มีการใช้งานแล้ว กรุณาเลือกอีเมล์อื่น'),
+                ),
+              );
+              return;
+            }
+
+            // ถ้าไม่พบข้อมูลที่ซ้ำกัน ให้บันทึกข้อมูล
+            _save();
+
+            // นำผู้ใช้ไปยังหน้า Login
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => login()),
+            );
+          } catch (e) {
+            print('เกิดข้อผิดพลาดในการสร้างหรืออัปเดตเอกสาร: $e');
+          }
+        },
       ),
     );
+  }
+  bool validatePassword(String password) {
+    RegExp regex = RegExp(r'^(?=.*?[A-Z]).{8,}$');
+    return regex.hasMatch(password);
   }
 
   Container buildDropdownRole() {
